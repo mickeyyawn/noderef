@@ -1,0 +1,23 @@
+{
+  "name": "noderef",
+  "version": "1.0.0",
+  "description": "Reference app for node.js  This is a starting place for future node apps.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mickeyyawn/noderef.git"
+  },
+  "keywords": [
+    "Ref",
+    "Node"
+  ],
+  "author": "Mickey Yawn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mickeyyawn/noderef/issues"
+  },
+  "homepage": "https://github.com/mickeyyawn/noderef#readme"
+}

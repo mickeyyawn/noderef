@@ -20,7 +20,7 @@ http.globalAgent.maxSockets = Infinity;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 const port = (process.env.NODE_PORT || 8080);
-const host = (process.env.NODE_HOST || '127.0.0.1');
+const host = (process.env.NODE_HOST || '0.0.0.0');
 
 
 log.info('Application is initializing...');

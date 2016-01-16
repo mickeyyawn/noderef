@@ -1,6 +1,7 @@
 var bunyan = require('bunyan');
+var log;
 
-function reqSerializer(req) {
+var reqSerializer = function (req) {
 
   return {
     method: req.method,
@@ -10,21 +11,30 @@ function reqSerializer(req) {
 
 }
 
-var log = bunyan.createLogger({
-	name: 'noderef',
-	serializers: {
-		req: reqSerializer
-	},
-  streams: [
-    {
-      level: 'info',
-      stream: process.stdout
-    },
-    {
-      level: 'info',
-      path: 'noderef.log'
-    }
-  ]
-});
+var createLogger = function () {
+
+  return bunyan.createLogger({
+  	name: 'noderef',
+  	serializers: {
+  		req: reqSerializer
+  	},
+    streams: [
+      {
+        level: 'info',
+        stream: process.stdout
+      },
+      {
+        level: 'info',
+        path: 'noderef.log'
+      }
+    ]
+  });
+
+}
+
+if (!log){
+  log = createLogger();
+}
+
 
 module.exports = log;

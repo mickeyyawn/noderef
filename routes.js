@@ -2,14 +2,21 @@
 
 var express = module.parent.exports.express;
 var app = module.parent.exports.app;
+var helmet = require('helmet');
 var info = module.parent.exports.info;
 var router = express.Router();
 var bodyParser = require('body-parser');
 var util = require('util');
+var fs = require('fs');
+var log = require('./log');
+
+var indexPage;
 
 app.use('/', router);
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(helmet()); // enforce various security at header level
 
 //
 // fix double slashes in routes...
@@ -21,19 +28,15 @@ app.use(function (req,res,next) {
 
 router.get('/', function(req, res) {
 
-  var response = {
-    status:  'ok',
-    message: 'hello world!!!'
-  };
+  log.info({req: req}, 'returning index.html');
 
+  if(!indexPage){
+    indexPage = fs.readFileSync(__dirname + '/' + 'index.html', 'utf8');
+  }
 
-  //res.send('Hello from Worker ' + cluster.worker.id);
+  res.send(indexPage);
 
-  console.log('Request to worker %d', info.cluster.worker.pid);
-
-  res.send('hello world from express!');
 });
-
 
 
 router.get('/health', function(req, res) {

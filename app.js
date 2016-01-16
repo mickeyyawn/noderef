@@ -1,11 +1,3 @@
-/*
-
-  REFERENCE APP FOR FUTURE NODE.JS PROJECTS.  DEMONSTRATES PACKAGE.JSON,
-  CLUSTERING, EXPRESS WEB APP SKELETON, LOGGING IN BUNYAN.
-
-  Run with overridden host/port/env  ->   NODE_PORT=9999 NODE_HOST=0.0.0.0 node app.js  --use_strict
-
-*/
 'use strict';
 
 var express = require('express');
@@ -15,18 +7,24 @@ var fs = require('fs');
 var util = require('util');
 var process = require('process');
 var os = require('os');
+var http = require('http');
+var log = require('./log');
 
 const cluster = require('cluster');
-const http = require('http');
-const numCPUs = require('os').cpus().length;
+const numCPUs = os.cpus().length;
+var packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const appName = packageJSON.name;
+const appVersion = packageJSON.version;
 
-require('http').globalAgent.maxSockets = Infinity;
+http.globalAgent.maxSockets = Infinity;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-
-
 
 const port = (process.env.NODE_PORT || 8080);
 const host = (process.env.NODE_HOST || '127.0.0.1');
+
+
+log.info('Application is initializing...');
+
 
 if (cluster.isMaster) {
   // Fork workers.
@@ -59,7 +57,7 @@ if (cluster.isMaster) {
   // collect info about the server/environment/app to use in a health route
 
   var info = {};
-  var packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+
 
   // set the process title based on what is in package.json
 
@@ -67,8 +65,8 @@ if (cluster.isMaster) {
 
   info.port = port;
   info.host = host;
-  info.name = packageJSON.name;
-  info.version = packageJSON.version;
+  info.name = appName
+  info.version = appVersion;
   info.cluster = cluster;
   info.process = process;
   info.os = os;

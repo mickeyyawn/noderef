@@ -1,2 +1,11 @@
 # noderef
-reference app for node apps.  clone/fork this guy when starting a new node project.  
+
+REFERENCE APP FOR FUTURE NODE.JS PROJECTS.  DEMONSTRATES PACKAGE.JSON,
+CLUSTERING, EXPRESS WEB APP SKELETON, LOGGING IN BUNYAN.
+
+NOT DEMONSTRATING TLS BECAUSE YOU WOULD NORMALLY FRONT THIS WITH
+AN ELB OR NGINX IN PRODUCTION.
+
+Run with overridden host/port/env  ->   NODE_PORT=9999 NODE_HOST=0.0.0.0 node app.js  --use_strict
+
+Clone/fork this guy when starting a new node project.  

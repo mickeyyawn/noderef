@@ -6,10 +6,14 @@
 #### http://[docker machine ip]:8080
 
 #### resources
-####
+#### https://docs.docker.com/engine/examples/nodejs_web_app/
 #### https://nodesource.com/blog/dockerizing-your-nodejs-applications/
+#### https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
+#### https://www.digitalocean.com/community/tutorials/docker-explained-how-to-containerize-python-web-applications
 
 FROM ubuntu:14.04
+
+MAINTAINER Mickey Yawn <mickey.yawn@turner.ccom>
 
 RUN apt-get update
 

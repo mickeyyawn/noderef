@@ -13,7 +13,9 @@
 
 FROM ubuntu:14.04
 
-MAINTAINER Mickey Yawn <mickey.yawn@turner.ccom>
+MAINTAINER Mickey Yawn <mickey.yawn@turner.com>
+
+LABEL Description="Runs noderef app in a container" Vendor="?" Version="1.0"
 
 RUN apt-get update
 

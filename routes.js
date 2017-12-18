@@ -25,18 +25,15 @@ app.use(compression());
 
 const logRouteHits = function(req, res, next){
 
-  var request = {}
-  request.path = req.path
-  request.method = req.method  
-
+  //
+  // log all routes hits that aren't health checks...
+  //
+  //
   // TODO: Log requesting ip...
   //
-  //if (logThisRoute(request.path)) {
-  //
-  // log all routes hits...
-  //
-  logs.info('Request: ', {request: request})
-  //}
+  if (req.path != '/hc') {
+    logs.info('Request: ', req.method + ': ' + req.path);
+  }
 
   next();
 }
@@ -50,6 +47,21 @@ const fixDoubleSlashes = function(req, res, next){
   next();
 
 }
+
+const healthCheck = function(req, res, next){
+  res.status(200).json(app.locals.info);
+}
+
+const returnIndexPage = function(req, res, next){
+  res.status(200).send(indexPage);;
+}
+
+const returnFourOhFourPage = function(req, res, next){
+  logs.warn('404');  // TODO, flesh this out more ???
+  res.status(404).send(fourOhFour);
+}
+
+
 
 //
 // for any request, we want to do a few things, comments in funcs explain them...
@@ -76,39 +88,11 @@ app.put('/user/:id/edit', user.update);
 
 
 
-
-
-
-
-
-
-
-
-app.get('/', function(req, res) {
-
-  //
-  // remove this once we tested it...
-  //
-  logs.info('returning index page');
-
-  res.status(200).send(indexPage);
-
-});
-
-
-app.get('/health', function(req, res) {
-
-  res.status(200).json(app.locals.info);
-
-});
-
-
-// TODO:  404 is not working
-
+app.get('/', returnIndexPage);
+app.get('/hc', healthCheck);
 //
-// 404 handler
+// 404 handler.  This handler should be at the bottom.  Basically we have
+// fallen through all other routes and handlers and can't service this request.
+// Return a 404 page...
 //
-app.use(function (req, res, next) {
-  logs.warn('404');  // TODO, flesh this out more ???
-  res.status(404).send(fourOhFour);
-})
+app.use(returnFourOhFourPage);

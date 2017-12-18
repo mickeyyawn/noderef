@@ -1,40 +1,18 @@
-var bunyan = require('bunyan');
-var log;
+var winston = require('winston');
 
-var reqSerializer = function (req) {
+const level = process.env.LOG_LEVEL || 'debug';
 
-  return {
-    method: req.method,
-    url: req.url,
-    headers: req.headers
-  }
-
-}
-
-var createLogger = function () {
-
-  return bunyan.createLogger({
-  	name: 'noderef',
-  	serializers: {
-  		req: reqSerializer
-  	},
-    streams: [
-      {
-        level: 'info',
-        stream: process.stdout
-      },
-      {
-        level: 'info',
-        path: 'noderef.log'
-      }
+const logger = new winston.Logger({
+    transports: [
+        new winston.transports.Console({
+            level: level,
+            colorize: true,
+            timestamp: function () {
+                return (new Date()).toISOString();
+            }
+        })
     ]
-  });
-
-}
-
-if (!log){
-  log = createLogger();
-}
+});
 
 
-module.exports = log;
+module.exports = logger;

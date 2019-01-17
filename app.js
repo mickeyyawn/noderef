@@ -50,3 +50,9 @@ module.exports.app = app;
 routes = require('./routes');
 
 logs.info(app.locals.info);
+
+process.on('uncaughtException', err => {
+    logs.error('something went wrong!', err);
+
+    server.close(() => process.exit(1));
+});

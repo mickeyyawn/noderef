@@ -55,7 +55,19 @@ logs.info(app.locals.info);
 const exerciseRedis = () => {
 
     var redis = require("redis"),
-    client = redis.createClient();
+    client = redis.createClient(process.env.REDIS_URL);
+    //client = redis.createClient('redis');
+
+    client.on('connect', function() {
+        console.log('Redis client connected');
+    });
+
+    client.on('error', function (err) {
+        console.log('Something went wrong connecting to redis ' + err);
+    });
+
+
+
     // hash / some key / some value  e.g. a hash in the redis map can have multiple keys...
     client.hset("hash key", "hashtest 1", "some value", redis.print);
     client.hset("hash key", "a different key at the same hash location", "some new value", redis.print);
@@ -84,5 +96,5 @@ exerciseRedis();
 process.on('uncaughtException', err => {
     logs.error('something went wrong!', err);
 
-    server.close(() => process.exit(1));
+    //server.close(() => process.exit(1));
 });

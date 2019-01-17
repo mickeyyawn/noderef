@@ -1,0 +1,40 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: noderef
+    ports:
+      - "9999:3000"
+    environment:
+      REDIS_URL: redis://redis
+      NODE_ENV: production
+      PGUSER: db_user
+      PGHOST: 0.0.0.0
+      PGPASSWORD: supersecretpwdhere
+      PGDATABASE: myDB
+      PGPORT: 5432
+      DATABASE_URL: postgres://myuser@postgres/testdb
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: myuser
+    container_name: postgres
+  redis:
+    image: redis:alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+volumes:
+  redis-data:

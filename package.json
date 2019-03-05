@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node app.js",
-    "prod": "node app.js"
+    "prod": "node app.js | pino-stackdriver --project mickey-233620"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "helmet": "3.9.0",
     "moment": "2.19.4",
     "pino": "^5.11.1",
+    "pino-stackdriver": "^1.1.1",
     "redis": "2.8.0",
     "request": "2.83.0"
   }

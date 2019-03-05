@@ -86,8 +86,42 @@ const exerciseRedis = () => {
 
 //exerciseRedis();
 
+async function quickstart(
+  projectId = "mickey-233620", // Your Google Cloud Platform project ID
+  logName = "my-log" // The name of the log to write to
+) {
+  // Imports the Google Cloud client library
+  const { Logging } = require("@google-cloud/logging");
+
+  // Creates a client
+  const logging = new Logging({ projectId });
+
+  // Selects the log to write to
+  const log = logging.log(logName);
+
+  // The data to write to the log
+  const text = "Hello, world!";
+
+  // The metadata associated with the entry
+  const metadata = {
+    resource: { type: "global" }
+  };
+
+  // Prepares a log entry
+  const entry = log.entry(metadata, text);
+
+  // Writes the log entry
+  await log.write(entry);
+  console.log(`Logged: ${text}`);
+}
+
+//quickstart();
+
+// go ahead and flush our init logs...
+log.flush();
+
 process.on("uncaughtException", err => {
-  logs.error("something went wrong!", err);
+  log.error("something went wrong!", err);
 
   //server.close(() => process.exit(1));
 });
